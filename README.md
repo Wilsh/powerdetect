@@ -19,7 +19,7 @@ Because of intermittent errors that arise from reading the gamepad input, a wrap
 - Change the macros `PHONE` and `TEXTMESSAGE` in `powerdetect.c` to the phone number to be notified and the message that will be sent.
   - Numbers outside the U.S. need a [different POST request](http://textbelt.com/) in `powerdetect.c`
 
-- Enable dependencies (for Debian-based systems):
+- Enable dependencies. For Debian-based systems:
 ```
 sudo modprobe joydev
 sudo modprobe analog
@@ -30,7 +30,9 @@ sudo apt-get install curl
 - Compile programs with `make`
 
 - Schedule scripts for automatic operation and weekly cleanup:
-`sudo crontab -e`
+```
+sudo crontab -e
+```
 Add these lines (replace `[path]` with the absolute path of the powerdetect folder):
 ```
 @reboot [path]/powerdetect/powerdetect.sh
