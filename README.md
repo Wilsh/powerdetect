@@ -20,21 +20,19 @@ Because of intermittent errors that arise from reading the gamepad input, a wrap
   - Numbers outside the U.S. need a [different POST request](http://textbelt.com/) in `powerdetect.c`
 
 - Enable dependencies (for Debian-based systems):
-
-```sudo modprobe joydev
-
+```
+sudo modprobe joydev
 sudo modprobe analog
-
 sudo modprobe xpad
-
-sudo apt-get install curl```
+sudo apt-get install curl
+```
 
 - Compile programs with `make`
 
 - Schedule scripts for automatic operation and weekly cleanup:
 `sudo crontab -e`
 Add these lines (replace `[path]` with the absolute path of the powerdetect folder):
-
-```@reboot [path]/powerdetect/powerdetect.sh
-
-0 0 * * 1 [path]/powerdetect/cleanup.sh```
+```
+@reboot [path]/powerdetect/powerdetect.sh
+0 0 * * 1 [path]/powerdetect/cleanup.sh
+```
