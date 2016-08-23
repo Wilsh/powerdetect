@@ -17,11 +17,11 @@
 #include <logger.h>
 
 #define GAMEPAD "/dev/input/js0"
-#define LOGFILE "/home/windsor/code/powerdetect/log/general.txt"
-#define PHONE "6109141169"
-#define TEXTMESSAGE "The stereo is on"
-#define REFERENCEFILE "/home/windsor/code/powerdetect/reference.dat"
-#define RESPONSEFILE "/home/windsor/code/powerdetect/response.dat"
+#define LOGFILE "[path]/powerdetect/log/general.txt"
+#define PHONE "5555555555"
+#define TEXTMESSAGE "Message to be sent"
+#define REFERENCEFILE "[path]/powerdetect/reference.dat"
+#define RESPONSEFILE "[path]/powerdetect/response.dat"
 
 struct js_event {
 	unsigned int time;
@@ -160,7 +160,7 @@ void handleIntermittentEvents(int fd, time_t* lastPress) {
 	}
 	if(detected) {
 		time(lastPress);
-		logEvent("/home/windsor/code/powerdetect/log/detected.txt", "Power detected");
+		logEvent("[path]/powerdetect/log/detected.txt", "Power detected");
 	}
 }
 
