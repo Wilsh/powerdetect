@@ -18,10 +18,8 @@
 
 #define GAMEPAD "/dev/input/js0"
 #define LOGFILE "[path]/powerdetect/log/general.txt"
-#define PHONE "5555555555"
+#define PHONE "5555555555@txt.att.net"
 #define TEXTMESSAGE "Message to be sent"
-#define REFERENCEFILE "[path]/powerdetect/reference.dat"
-#define RESPONSEFILE "[path]/powerdetect/response.dat"
 
 struct js_event {
 	unsigned int time;
@@ -36,7 +34,6 @@ void handleIntermittentEvents(int, time_t*);
 int buttonRecentlyPressed(time_t);
 int isTime();
 void getTime(char*);
-void sendText(char*);
 
 int main(void)
 {
@@ -68,9 +65,10 @@ int main(void)
 		if(buttonRecentlyPressed(lastPress) && isTime()) {
 			getTime(timeBuffer);
 			sprintf(textMessageBuffer, "%s PM %s", timeBuffer, TEXTMESSAGE);
-			sprintf(buffer, "curl -X POST http://textbelt.com/text -d number=%s -d \"message=%s\" > %s",
-							PHONE, textMessageBuffer, RESPONSEFILE);
-			sendText(buffer);
+			sprintf(buffer, "echo '%s' | mail %s", textMessageBuffer, PHONE);
+			if(system(buffer) == -1) {
+				perror("SMS init");
+			}
 			printf("Message sent\n");
 		}
 		sleep(110);
@@ -235,62 +233,4 @@ void getTime(char* buffer) {
 	time(&timer);
 	currentTime = localtime(&timer);
 	strftime(buffer, 6, "%I:%M", currentTime);
-}
-
-/*******************************************************************************
-* Function name:  sendText
-*                                                                             
-* Description:    Executes a shell command which is formatted to transmit an SMS
-*                  message and store the command's response in a file. This 
-*                  response is compared to the known success message which is 
-*                  stored in a separate file. If the SMS transmission is not
-*                  successful, the command will be executed again up to a total
-*                  of five times
-*                                                                             
-* Parameters:     char* message - IMPORT - shell command to execute
-*                                                                             
-* Return Value:   none
-*******************************************************************************/
-void sendText(char* message) {
-	FILE* pFile1;
-	FILE* pFile2;
-	int ch1, ch2;
-	int attempts = 5;
-	char buffer[80];
-	
-	while(attempts > 0) {
-		remove(RESPONSEFILE);
-		if(system(message) == -1) {
-			perror("SMS init");
-		}
-		else {
-			//check response from SMS service
-			if(pFile1 = fopen(RESPONSEFILE, "r")) {
-				if(pFile2 = fopen(REFERENCEFILE, "r")) {
-					do {
-						ch1 = fgetc(pFile1);
-						ch2 = fgetc(pFile2);
-					}
-					while(ch1 != EOF && ch2 != EOF && ch1 == ch2);
-					
-					fclose(pFile1);
-					fclose(pFile2);
-					
-					if(ch1 == ch2) {
-						logEvent(LOGFILE, "SMS transmitted successfully");
-						return;
-					}
-				}
-				else
-					perror("open reference file");
-			}
-			else
-				perror("open response file");
-		}
-		attempts--;
-		sprintf(buffer, "SMS transmission unsuccessful. %d attempts remaining", attempts);
-		logEvent(LOGFILE, buffer);
-		sleep(60);
-	}
-	logEvent(LOGFILE, "SMS transmission failed");
 }

@@ -17,15 +17,15 @@ Because of intermittent errors that arise from reading the gamepad input, a wrap
   - powerdetect.sh
 
 - Change the macros `PHONE` and `TEXTMESSAGE` in `powerdetect.c` to the phone number to be notified and the message that will be sent.
-  - Numbers outside the U.S. need a [different POST request](http://textbelt.com/) in `powerdetect.c`
+  - The text message delivery service originally used for this program is no longer free. As a result, text messages are now sent via email using a carrier-specific email address (e.g. 5555555555@txt.att.net).
 
 - Enable dependencies. For Debian-based systems:
 ```
 sudo modprobe joydev
 sudo modprobe analog
 sudo modprobe xpad
-sudo apt-get install curl
 ```
+The `mail` command must be operational.
 
 - Compile programs with `make`
 

@@ -19,7 +19,7 @@
 
 //number of seconds to wait before restarting given program
 #define RESTARTAFTER 30
-#define LOGFILE "/home/windsor/code/powerdetect/log/general.txt"
+#define LOGFILE "[path]/powerdetect/log/general.txt"
 
 void createChild(char*);
 
