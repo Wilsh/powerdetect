@@ -1,14 +1,14 @@
-#powerdetect
+# powerdetect
 
-##Purpose
+## Purpose
 
 This program was written to provide a notification when a remotely-located audio system is left on past a certain time of day. This is accomplished by triggering a button on a USB-connected gamepad via a low-voltage circuit that is activated when the audio system is on. If the gamepad button is triggered during a certain time, a text message is sent to a cell phone.
 
-##Method
+## Method
 
 Because of intermittent errors that arise from reading the gamepad input, a wrapper program is used to run the main program. To ensure continuous operation, the wrapper program will restart the main program when it exits. Errors, events, and the audio system's status are logged for a minimum of one week.
 
-##Configuration
+## Configuration
 
 - Replace all instances of `[path]` with the absolute path of the powerdetect folder in the following files:
   - powerdetect.c
